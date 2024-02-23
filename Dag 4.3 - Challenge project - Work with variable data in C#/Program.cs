@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 // ourAnimals array will store the following: 
 string animalSpecies = "";
@@ -133,19 +134,21 @@ do
         case "2":
             // #1 Display all dogs with a multiple search characteristics
 
-            string dogCharacteristic = "";
+            string[] dogCharacteristic;
 
-            while (dogCharacteristic == "")
+            while (true)
             {
                 // #2 have user enter multiple comma separated characteristics to search for
-                Console.WriteLine($"\r\nEnter one desired dog characteristic to search for");
+                Console.WriteLine($"\r\nEnter the desired dog characteristics to search for, separate with comma");
                 readResult = Console.ReadLine();
                 if (readResult != null)
                 {
-                    dogCharacteristic = readResult.ToLower().Trim();
+                    dogCharacteristic = readResult.ToLower().Split(", ");
+                    Array.Sort(dogCharacteristic);
                     Console.WriteLine();
+                    break;
                 }
-            }
+            } 
 
             bool noMatchesDog = true;
             string dogDescription = "";
@@ -177,14 +180,18 @@ do
 
                     // #3a iterate submitted characteristic terms and search description for each term
 
-                    if (dogDescription.Contains(dogCharacteristic))
+                    foreach (string searchTerm in dogCharacteristic)
                     {
-                        // #3b update message to reflect term 
-                        // #3c set a flag "this dog" is a match
-                        Console.WriteLine($"\nOur dog {ourAnimals[i, 3]} is a match!");
+                        if (dogDescription.Contains(searchTerm))
+                        {
+                            // #3b update message to reflect term 
+                            // #3c set a flag "this dog" is a match
+                            Console.WriteLine($"\nOur dog {ourAnimals[i, 3]} is a match for {searchTerm}!");
 
-                        noMatchesDog = false;
+                            noMatchesDog = false;
+                        }
                     }
+                    
 
                     // #3d if "this dog" is match write match message + dog description
                 }
